@@ -1,0 +1,34 @@
+sudo: false
+dist: trusty
+language: python
+matrix:
+  include: # https://github.com/travis-ci/travis-ci/issues/8783
+    - os: linux
+      python: 3.4
+    - os: linux
+      python: 3.5
+    - os: linux
+      python: 3.6
+    - os: linux
+      python: 3.7-dev
+    - os: linux
+      python: nightly
+    - os: linux
+      python: pypy3
+    # https://github.com/travis-ci/travis-ci/issues/6865#issuecomment-345513305
+    #- os: linux
+    #  python: pypy3-nightly
+    - os: osx
+      python: nightly
+    #- os: osx
+    #  python: pypy3
+    #- os: osx
+    #  python: pypy3-nightly
+before_install:
+  - pip3 install --upgrade setuptools setuptools_scm coveralls
+install:
+  - python setup.py install
+script:
+  - coverage run --source=lazily setup.py test
+after_success:
+  - coveralls
